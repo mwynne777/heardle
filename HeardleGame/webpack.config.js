@@ -1,5 +1,4 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
-const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
 
 const deps = require("./package.json").dependencies;
 module.exports = {
@@ -54,25 +53,6 @@ module.exports = {
   },
 
   plugins: [
-    new ModuleFederationPlugin({
-      name: "game",
-      filename: "remoteEntry.js",
-      remotes: {
-        'player': 'HeardlePlayer@http://localhost:3003/remoteEntry.js',
-      },
-      exposes: {},
-      shared: {
-        ...deps,
-        react: {
-          singleton: true,
-          requiredVersion: deps.react,
-        },
-        "react-dom": {
-          singleton: true,
-          requiredVersion: deps["react-dom"],
-        },
-      },
-    }),
     new HtmlWebPackPlugin({
       template: "./src/index.html",
     }),

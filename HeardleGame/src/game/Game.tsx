@@ -1,12 +1,11 @@
-import React, { Fragment, useEffect, useMemo, useReducer } from "react";
+import React, { useEffect, useMemo, useReducer } from "react";
 import Box from "@mui/material/Box";
 import Button from '@mui/material/Button'
 
 import SpotifyWebApi from 'spotify-web-api-js'
 import Autocomplete from './Autocomplete'
 import Guesses from "./Guesses";
-// import Progress from './Progress'
-import Progress from 'player/Player';
+import Progress from './progress/Progress';
 import reducer, { getNextDuration, initialGameState } from "./reducer";
 import AnswerModal from "./AnswerModal";
 

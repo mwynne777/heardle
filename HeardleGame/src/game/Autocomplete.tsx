@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import MaterialAutocomplete from  '@mui/material/Autocomplete'
 import TextField from '@mui/material/TextField';
 
@@ -11,6 +11,7 @@ type AutcompleteProps = {
 }
 
 const Autocomplete = ({ options, getAutocomplete, onSelect }: AutcompleteProps) => {
+    const [value, setValue] = useState('')
     const debounce = useRef<NodeJS.Timeout | null>(null)
 
     return (
@@ -18,9 +19,15 @@ const Autocomplete = ({ options, getAutocomplete, onSelect }: AutcompleteProps) 
             clearOnBlur={false}
             disablePortal
             id="combo-box-demo"
+            value={value}
             options={options}
             sx={{ width: 350 }}
-            onChange={(_event, value) => value && onSelect(value)}
+            onChange={(_event, value) => { 
+                if (value !== null) { 
+                    onSelect(value) 
+                }
+                setValue('') 
+            }}
             noOptionsText=''
             renderOption={(props, option, state) => {
                 const prefix = state.inputValue
@@ -40,6 +47,7 @@ const Autocomplete = ({ options, getAutocomplete, onSelect }: AutcompleteProps) 
             renderInput={(params) => 
                 <TextField
                     {...params}
+                    value={value}
                     onKeyDown={(e) => {
                         var code = (e.keyCode || e.which);
         
@@ -49,6 +57,7 @@ const Autocomplete = ({ options, getAutocomplete, onSelect }: AutcompleteProps) 
                         }
                     }}
                     onChange={(e) => {
+                        setValue(e.target.value)
                         debounce.current && clearTimeout(debounce.current)
                         debounce.current = setTimeout(() => {
                             getAutocomplete(e.target.value)
