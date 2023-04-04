@@ -43,7 +43,6 @@ const game = () => {
                 timeout = setTimeout(() => {
                     dispatch({ type: 'toggle-play', payload: { playing: false }})
                     seekTo(0)
-                    console.log('This is the useEffect for playing changing')
                 }, duration * 1000)
             }
         }

@@ -94,7 +94,9 @@ const AnswerModal = ({answer, open, playing, songLengthMillis, titleText, onClos
                 >
                     <IconButton
                         aria-label={playing ? 'pause' : 'play'}
-                        onClick={() => { togglePlay(); seekTo(calculatedMillis) }}
+                        onClick={() => { 
+                            togglePlay() 
+                            if (calculatedMillis > 0) seekTo(calculatedMillis) }}
                         sx={{ width: '24px', height: '24px' }}
                     >
                         {!playing ? (
