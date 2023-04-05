@@ -8,9 +8,10 @@ type AutcompleteProps = {
     options: string[]
     getAutocomplete: (value: string) => void
     onSelect: (value: string) => void
+    labelText: string
 }
 
-const Autocomplete = ({ options, getAutocomplete, onSelect }: AutcompleteProps) => {
+const Autocomplete = ({ options, getAutocomplete, onSelect, labelText }: AutcompleteProps) => {
     const [value, setValue] = useState('')
     const debounce = useRef<NodeJS.Timeout | null>(null)
 
@@ -63,7 +64,7 @@ const Autocomplete = ({ options, getAutocomplete, onSelect }: AutcompleteProps) 
                             getAutocomplete(e.target.value)
                         }, DEBOUNCE_TIMEOUT_MS);
                     }}
-                    label="Guess the song (by title or artist)"
+                    label={labelText}
                 />
             }
         />

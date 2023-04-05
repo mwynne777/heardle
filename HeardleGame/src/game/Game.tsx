@@ -1,40 +1,50 @@
-import React, { useEffect, useMemo, useReducer } from "react";
+import React, { useEffect, useReducer } from "react";
 import Box from "@mui/material/Box";
 import Button from '@mui/material/Button'
+import SpotifyWebApi from "spotify-web-api-js";
+import { Link, useLocation } from "react-router-dom";
 
-import SpotifyWebApi from 'spotify-web-api-js'
 import Autocomplete from './Autocomplete'
 import Guesses from "./Guesses";
 import Progress from './progress/Progress';
 import reducer, { getNextDuration, initialGameState } from "./reducer";
 import AnswerModal from "./AnswerModal";
 
-var spotifyApi = new SpotifyWebApi()
+const getSongsByArtist = async (artistId: string, spotifyApi: SpotifyWebApi.SpotifyWebApiJs) => {
+    const artistAlbums = await spotifyApi.getArtistAlbums(artistId, { album_type: 'album' })
+    console.log(artistAlbums.items)
+    const promises = artistAlbums.items.map(album => spotifyApi.getAlbumTracks(album.id))
+    const unvalidatedSongs = await Promise.all(promises)
+    const validatedSongs = new Set()
+    unvalidatedSongs.forEach((album) => {
+        album.items.forEach((song) => {
+            validatedSongs.add(song.name)
+        })
+    })
+    console.log(validatedSongs)
+}
 
-type SpotifyParam = { access_token: string, refresh_token: string }
+type GameProps = {
+    spotifyApi: SpotifyWebApi.SpotifyWebApiJs
+    accessToken: string
+}
 
-function isSpotifyParam(param: {} | SpotifyParam): param is SpotifyParam {
-    return (param as SpotifyParam).access_token !== undefined &&
-    (param as SpotifyParam).refresh_token !== undefined;
-  }
-
-const game = () => {
+const game = ({ spotifyApi, accessToken }: GameProps) => {
     const [state, dispatch] = useReducer(reducer, initialGameState)
     const { answer, autocompleteOptions, duration, guesses, isOver, isWinningRound, playing, spotifyDeviceId } = state
-
-    const params = useMemo(() => {
-        var hashParams = { access_token: '', refresh_token: ''};
-        var e, r = /([^&;=]+)=?([^&;]*)/g,
-            q = window.location.hash.substring(1);
-        while ( e = r.exec(q)) {
-           hashParams[e[1]] = decodeURIComponent(e[2]);
-        }
-        return hashParams;
-    }, [])
+    const { state: routeState } = useLocation();
 
     const seekTo = (millis: number) => {
         spotifyApi.seek(millis, { device_id: spotifyDeviceId })
     }
+
+    useEffect(() => {
+        if (routeState?.artist) getSongsByArtist(routeState.artist, spotifyApi)
+    }, [])
+
+    useEffect(() => {
+        fetchRandomSong()
+    }, [])
 
     useEffect(() => {
         let timeout: NodeJS.Timeout
@@ -48,13 +58,6 @@ const game = () => {
         }
         return () => clearTimeout(timeout)
     }, [playing])
-
-    useEffect(() => {
-        if (isSpotifyParam(params)) {
-            spotifyApi.setAccessToken(params.access_token)
-            fetchRandomSong()
-        }
-    }, [params])
 
     const fetchAutocomplete = async (autocompletePrefix: string) => {
         const autocompleteResponse = await fetch(`http://localhost:3001/getAutocomplete?prefix=${autocompletePrefix}`)
@@ -86,10 +89,10 @@ const game = () => {
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '16px' }}>
             <Guesses guesses={guesses} />
-            { params.access_token.length > 0 &&
+            { accessToken.length > 0 &&
                 <Box className='customPlayer' sx={{ width: '500px' }}>
                     <Progress 
-                        accessToken={params.access_token}
+                        accessToken={accessToken}
                         duration={duration}
                         play={playing}
                         uri={answer.uri}
@@ -105,6 +108,7 @@ const game = () => {
                 </Box>
             }
             <Autocomplete
+                labelText="Guess the song (by title or artist)"
                 options={autocompleteOptions}
                 getAutocomplete={fetchAutocomplete}
                 onSelect={(value) => {
@@ -157,6 +161,7 @@ const game = () => {
                     togglePlay={() => dispatch({ type: 'toggle-play', payload: { playing: !playing } })}
                 />
             }
+            <Link to='/artist'>Go to Artist Game</Link>
         </div>
     )
 }
