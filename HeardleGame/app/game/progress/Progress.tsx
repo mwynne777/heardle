@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import SpotifyPlayer from 'react-spotify-web-playback'
 import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
-import { useProgressBarStyles } from './useProgressBarStyles';
 import Background from './hpb.png'
 
 const formatTimeStamp = (time: number) => {
@@ -25,8 +24,6 @@ export default function Progress({ accessToken, duration, play, uri, seekTo, set
     const [currentTimeStamp, setCurrentTimeStamp] = useState(formatTimeStamp(0))
     const progressMax = (duration / 16) * 100
     const timer = useRef<NodeJS.Timer | null>(null)
-
-    const classes = useProgressBarStyles();
 
     useEffect(() => {
         if (!play) {
@@ -75,8 +72,6 @@ export default function Progress({ accessToken, duration, play, uri, seekTo, set
             <LinearProgress
                 variant="determinate"
                 value={progress}
-                className={classes.progressBar}
-                classes={{ bar: classes.progressBarInner.toString() }}
                 sx={{
                     background: `url(${Background})`,
                     backgroundSize: '500px',

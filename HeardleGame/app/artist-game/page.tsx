@@ -1,4 +1,6 @@
-import React, { useState } from "react"
+'use client'
+
+import { useState } from "react"
 import Link  from "next/link";
 import SpotifyWebApi from "spotify-web-api-js";
 import Box from "@mui/material/Box";

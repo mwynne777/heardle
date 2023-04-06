@@ -1,4 +1,6 @@
-import React, { useEffect, useReducer } from "react";
+'use client'
+
+import { useEffect, useReducer } from "react";
 import Box from "@mui/material/Box";
 import Button from '@mui/material/Button'
 import SpotifyWebApi from "spotify-web-api-js";

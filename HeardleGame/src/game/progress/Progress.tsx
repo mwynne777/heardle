@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import SpotifyPlayer from 'react-spotify-web-playback'
 import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
@@ -53,7 +53,7 @@ export default function Progress({ accessToken, duration, play, uri, seekTo, set
       };
 
   return (
-      <Fragment>
+      <>
         <SpotifyPlayer 
             token={accessToken}
             name='HeardleClonePlayer'
@@ -89,6 +89,6 @@ export default function Progress({ accessToken, duration, play, uri, seekTo, set
             <div>{currentTimeStamp}</div>
             <div>0:16</div>
         </Box>
-    </Fragment>
+    </>
   )
 }
