@@ -27,7 +27,7 @@ I Can't Stop Loving You - Ray Charles
 Up On The Roof - Drifters
 Twist And Shout - Isley Brothers
 These Arms Of Mine - Otis Redding
-Do You Love Me – Contours
+Do You Love Me - Contours
 Louie Louie - Kingsmen
 She Loves You - Beatles
 I Want To Hold Your Hand - Beatles
@@ -37,7 +37,7 @@ Surfin' USA - Beach Boys
 Glad All Over - Dave Clark Five
 It's All Right - Impressions
 Blowin' In The Wind - Bob Dylan / Peter Paul & Mary
-Please Please Me – Beatles
+Please Please Me - Beatles
 You've Lost That Lovin' Feeling - Righteous Brothers
 My Girl - Temptations
 You Really Got Me - Kinks
@@ -47,7 +47,7 @@ I Get Around - Beach Boys
 All Day And All Of The Night - Kinks
 Oh, Pretty Woman - Roy Orbison
 A Hard Day's Night - Beatles
-She's Not There – Zombies
+She's Not There - Zombies
 (I Can't Get No) Satisfaction - Rolling Stones
 Like A Rolling Stone - Bob Dylan
 In The Midnight Hour - Wilson Pickett
@@ -57,7 +57,7 @@ Mr. Tambourine Man - Byrds / Bob Dylan
 Yesterday - Beatles
 The Sounds Of Silence - Simon & Garfunkel
 Ticket To Ride - Beatles
-The Tracks Of My Tears – Miracles
+The Tracks Of My Tears - Miracles
 Good Vibrations - Beach Boys
 When A Man Loves A Woman - Percy Sledge
 Reach Out, I'll Be There - Four Tops
@@ -67,7 +67,7 @@ Eight Miles High - Byrds
 For What It's Worth - Buffalo Springfield
 Paint It Black - Rolling Stones
 You Keep Me Hangin' On - Supremes
-Wild Thing – Troggs
+Wild Thing - Troggs
 Respect - Aretha Franklin
 Light My Fire - Doors
 Sunshine Of Your Love - Cream
@@ -87,7 +87,7 @@ Jumpin' Jack Flash - Rolling Stones
 Born To Be Wild - Steppenwolf
 White Room - Cream
 Sympathy For The Devil - Rolling Stones
-Revolution – Beatles
+Revolution - Beatles
 Whole Lotta Love - Led Zeppelin
 Proud Mary - Creedence Clearwater Revival
 I Want You Back - Jackson 5
@@ -97,7 +97,7 @@ Suite: Judy Blue Eyes - Crosby, Stills & Nash
 Dazed And Confused - Led Zeppelin
 Gimme Shelter - Rolling Stones
 Come Together - Beatles
-I Can't Get Next To You – Temptations
+I Can't Get Next To You - Temptations
 Layla - Derek and the Dominos
 Bridge Over Troubled Water - Simon and Garfunkel
 Let It Be - The Beatles
@@ -107,7 +107,7 @@ Lola - The Kinks
 Who'll Stop the Rain - Creedence Clearwater Revival
 Fire and Rain - James Taylor
 Paranoid - Black Sabbath
-All Right Now – Free
+All Right Now - Free
 Stairway to Heaven - Led Zeppelin
 Imagine - John Lennon
 What's Going On - Marvin Gaye
@@ -147,7 +147,7 @@ Autobahn - Kraftwerk
 Help Me - Joni Mitchell
 Waterloo - Abba
 Can't Get Enough of Your Love, Babe - Barry White
-Tell Me Something Good – Rufus
+Tell Me Something Good - Rufus
 Born to Run - Bruce Springsteen
 Bohemian Rhapsody - Queen
 Walk This Way - Aerosmith
@@ -272,8 +272,8 @@ Sweet Child O' Mine - Guns N' Roses
 With or Without You - U2
 I Still Haven't Found What I'm Looking For - U2
 Faith - George Michael
-Bad   Michael Jackson
-Welcome To the Jungle   Guns N' Roses
+Bad - Michael Jackson
+Welcome To the Jungle - Guns N' Roses
 Pour Some Sugar On Me - Def Leppard
 Sign "O" the Times - Prince
 (I've Had) The Time of My Life - Bill Medley & Jennifer Warnes
@@ -357,7 +357,7 @@ The Crossroads - Bone Thugs 'n' Harmony
 Ironic - Alanis Morissette
 Dear Mama - 2Pac
 Santa Monica - Everclear
-Champagne Supernova – Oasis
+Champagne Supernova - Oasis
 California Love - 2Pac
 No Diggity - BLACKstreet
 Don't Speak - No Doubt
@@ -387,7 +387,7 @@ The Boy Is Mine - Brandy and Monica
 One Week - Barenaked Ladies
 Bawitdaba - Kid Rock
 Freak On A Leash - Korn
-Rosa Parks – Outkast
+Rosa Parks - Outkast
 Smooth - Santana and Rob Thomas
 My Name Is - Eminem
 Scar Tissue - Red Hot Chili Peppers
@@ -397,7 +397,7 @@ All The Small Things - Blink 182
 I Try - Macy Gray
 Drive - Incubus
 Say My Name - Destiny's Child
-Steal My Sunshine – Len
+Steal My Sunshine - Len
 Idioteque - Radiohead
 Yellow - Coldplay
 Beautiful Day - U2
@@ -407,7 +407,7 @@ Stan - Eminem
 Try Again - Aaliyah
 B.O.B. (Bombs Over Baghdad) - OutKast
 In the End - Linkin Park
-Music – Madonna
+Music - Madonna
 Last Nite - The Strokes
 Get Ur Freak On - Missy Elliott
 Fallin' - Alicia Keys
@@ -447,7 +447,7 @@ Neighborhood #1 (Tunnels) - Arcade Fire
 Float On - Modest Mouse
 Drop It Like It's Hot - Snoop Dogg feat. Pharrell
 Heartbeat - Annie
-Slow Hands – Interpol
+Slow Hands - Interpol
 Feel Good Inc. - Gorillaz
 Gold Digger - Kanye West
 I Bet You Look Good On the Dancefloor - Arctic Monkeys
@@ -477,7 +477,7 @@ Stronger - Kanye West
 D.A.N.C.E. - Justice
 Good Life - Kanye West feat. T. Pain
 Crank That - Soulja Boy Tell 'Em
-Jigsaw Falling Into Place – Radiohead
+Jigsaw Falling Into Place - Radiohead
 Single Ladies (Put a Ring On It) - Beyoncé
 Viva la Vida - Coldplay
 Just Dance - Lady Gaga
@@ -487,7 +487,7 @@ I'm Yours - Jason Mraz
 Hot N' Cold - Katy Perry
 Sex On Fire - Kings of Leon
 Use Somebody - Kings of Leon
-Disturbia – Rihanna
+Disturbia - Rihanna
 I Gotta Feeling - Black Eyed Peas
 Boom Boom Pow - Black Eyed Peas
 Empire State of Mind - Jay Z feat. Alicia Keys

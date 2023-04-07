@@ -11,7 +11,6 @@ type Song = {
 	title: string
 	uri: string
 }
-
 const initialSong = {
 	artist: '',
 	id: '',
@@ -175,4 +174,5 @@ const reducer = (state: GameState, action: GameAction): GameState => {
 }
 
 export default reducer
-export { getNextDuration, initialGameState, Song }
+export { getNextDuration, initialGameState }
+export type { Song }

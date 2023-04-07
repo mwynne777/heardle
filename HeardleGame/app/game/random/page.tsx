@@ -1,15 +1,24 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { isUserAuthorized } from '../../../utils/authorization';
 
-import { isUserAuthorized } from '../../utils/authorization';
-import GameModes from './GameModes';
+import Game from '../Game'
 
 const USER_COOKIE: string = process.env.USER_COOKIE ?? ''
 
-export default async function Page() {
+export type Song = {
+	artist: string
+	id: string
+	img: string
+	lengthMillis: number
+	title: string
+	uri: string
+}
+
+const random = async () => {
     const cookieStore = cookies();
     const user = cookieStore.get(USER_COOKIE);
-    
+
     const userAuth = await isUserAuthorized(user?.value)
 
     if (!userAuth.isAuthorized) {
@@ -18,7 +27,8 @@ export default async function Page() {
     }
 
     return (
-        <GameModes/>
+        <Game accessToken={userAuth.access_token}/>
     )
-  }
-  
+}
+
+export default random

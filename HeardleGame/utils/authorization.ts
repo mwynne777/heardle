@@ -20,7 +20,11 @@ const isUserAuthorized = async (id: string | null | undefined): Promise<Authoriz
         [id]
     )
 
-    if (rows.length > 0 && rows[0].access_token !== null && new Date(rows[0].access_token_expires_at) > new Date()) {
+    const now = new Date()
+    var newDateObj = new Date(now.getTime() + now.getTimezoneOffset()*60000);
+    console.log('Comparing dates - expires_at: ', new Date(rows[0].access_token_expires_at), 'date: ', newDateObj)
+    console.log(new Date(rows[0].access_token_expires_at) > newDateObj)
+    if (rows.length > 0 && rows[0].access_token !== null && new Date(rows[0].access_token_expires_at) > newDateObj) {
         console.log('Pulled your access token from the db, looks current')
         return { isAuthorized: true, access_token: rows[0].access_token }
     }
@@ -46,11 +50,12 @@ const isUserAuthorized = async (id: string | null | undefined): Promise<Authoriz
         if (tokenResponse.ok) {
             const { access_token } = await tokenResponse.json()
             const access_token_expires_at = new Date().toJSON().slice(0, 19).replace('T', ' ');
-            const [rows] = await connection.execute(
+            await connection.execute(
                 'UPDATE users SET access_token = ?, access_token_expires_at = ? WHERE id = ?',
                 [access_token, access_token_expires_at, id]
             )
             console.log('Requested a new access token using your refresh token')
+            console.log('Are the old and new access tokens the same? ', access_token === rows[0].access_token)
             return { isAuthorized: true, access_token }
         }
     }
