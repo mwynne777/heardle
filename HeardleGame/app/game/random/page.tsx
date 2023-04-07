@@ -1,10 +1,5 @@
-import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
-import { isUserAuthorized } from '../../../utils/authorization';
-
+import authorizePage from '../../../utils/authorizePage'
 import Game from '../Game'
-
-const USER_COOKIE: string = process.env.USER_COOKIE ?? ''
 
 export type Song = {
 	artist: string
@@ -16,18 +11,10 @@ export type Song = {
 }
 
 const random = async () => {
-    const cookieStore = cookies();
-    const user = cookieStore.get(USER_COOKIE);
-
-    const userAuth = await isUserAuthorized(user?.value)
-
-    if (!userAuth.isAuthorized) {
-        console.log('Redirecting you to log in again w/ Spotify')
-        redirect('/')
-    }
+    const access_token = await authorizePage()
 
     return (
-        <Game accessToken={userAuth.access_token}/>
+        <Game accessToken={access_token}/>
     )
 }
 

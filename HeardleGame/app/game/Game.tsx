@@ -3,7 +3,7 @@
 import { useEffect, useReducer } from "react";
 import Box from "@mui/material/Box";
 import Button from '@mui/material/Button'
-import SpotifyWebApi from "spotify-web-api-js";
+import spotifyApi from "./SpotifyApi";
 import Link from "next/link";
 
 import Autocomplete from './Autocomplete'
@@ -26,8 +26,6 @@ import AnswerModal from "./AnswerModal";
 //     console.log(validatedSongs)
 // }
 
-var spotifyApi = new SpotifyWebApi()
-
 type GameProps = {
     accessToken: string
 }
@@ -35,7 +33,10 @@ type GameProps = {
 const game = ({ accessToken }: GameProps) => {
     const [state, dispatch] = useReducer(reducer, initialGameState)
     const { answer, autocompleteOptions, duration, guesses, isOver, isWinningRound, playing, spotifyDeviceId } = state
-    spotifyApi.setAccessToken(accessToken)
+    
+    useEffect(() => { 
+        spotifyApi.setAccessToken(accessToken)
+    }, [])
 
     const seekTo = (millis: number) => {
         spotifyApi.seek(millis, { device_id: spotifyDeviceId })

@@ -11,7 +11,7 @@ const GameModes = () => {
             <Typography variant="h5" sx={{ marginBottom: '15px' }}>
                 Would you like to play artist challenge or classic heardle?
             </Typography>
-            <Link href='/game/artist' style={{ textDecoration: 'none' }}>
+            <Link href='/artist' style={{ textDecoration: 'none' }}>
                 <Button variant='outlined' sx={{ margin: '7px'}}>
                     Artist
                 </Button>

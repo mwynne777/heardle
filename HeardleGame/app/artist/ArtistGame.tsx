@@ -1,21 +1,26 @@
 'use client'
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Link  from "next/link";
-import SpotifyWebApi from "spotify-web-api-js";
+import spotifyApi from "../game/SpotifyApi";
 import Box from "@mui/material/Box";
+import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography';
 
 import Autocomplete from "../game/Autocomplete"
 
 type ArtistGameProps = {
-    spotifyApi: SpotifyWebApi.SpotifyWebApiJs
+    accessToken: string
 }
 
-const ArtistGame = ({ spotifyApi }: ArtistGameProps) => {
+const ArtistGame = ({ accessToken }: ArtistGameProps) => {
     const [optionsFull, setOptionsFull] = useState<SpotifyApi.ArtistObjectFull[]>([])
     const [options, setOptions] = useState<string[]>([])
     const [artist, setArtist] = useState<SpotifyApi.ArtistObjectFull | null>(null)
+
+    useEffect(() => { 
+        spotifyApi.setAccessToken(accessToken)
+    }, [])
 
     return (
         <Box sx={{
@@ -38,11 +43,15 @@ const ArtistGame = ({ spotifyApi }: ArtistGameProps) => {
                 }}
             />
             { artist &&
-                <Box>
+                <>
                     <Typography variant="h3">{artist.name}</Typography>
                     <img src={artist.images[0].url} height={300} width={300}/>
-                    <Link href='/game'>Play {artist.name} Heardle</Link>
-                </Box>
+                    <Link href='/artist' style={{ textDecoration: 'none' }}>
+                        <Button variant='outlined' sx={{ margin: '7px'}}>
+                            Play {artist.name} Heardle
+                        </Button>
+                    </Link>
+                </>
             }
         </Box>
     )

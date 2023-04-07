@@ -22,8 +22,6 @@ const isUserAuthorized = async (id: string | null | undefined): Promise<Authoriz
 
     const now = new Date()
     var newDateObj = new Date(now.getTime() + now.getTimezoneOffset()*60000);
-    console.log('Comparing dates - expires_at: ', new Date(rows[0].access_token_expires_at), 'date: ', newDateObj)
-    console.log(new Date(rows[0].access_token_expires_at) > newDateObj)
     if (rows.length > 0 && rows[0].access_token !== null && new Date(rows[0].access_token_expires_at) > newDateObj) {
         console.log('Pulled your access token from the db, looks current')
         return { isAuthorized: true, access_token: rows[0].access_token }
