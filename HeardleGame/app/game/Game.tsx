@@ -55,7 +55,6 @@ const game = ({ accessToken, artistId }: GameProps) => {
         if (artistId === null || artistId === undefined) {
             const autocompleteResponse = await fetch(`/api/autocomplete?prefix=${autocompletePrefix}`)
             newAutoCompleteOptions = (await autocompleteResponse.json()).autocompleteOptions
-            console.log(newAutoCompleteOptions)
         } else {
             newAutoCompleteOptions = artistSongs.filter(s => s.toLowerCase().includes(autocompletePrefix.toLowerCase()))
         }
