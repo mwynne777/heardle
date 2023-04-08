@@ -27,9 +27,6 @@ export default async(
 	var state = req.query.state || null
 	var storedState = req.cookies ? req.cookies[STATE_KEY] : null
 
-	console.log('storedState: ', storedState)
-	console.log('state: ', state)
-
 	if (state === null || state !== storedState) {
 		res.redirect(
 			`${CLIENT_URL}/#` +
@@ -76,7 +73,11 @@ export default async(
 			}
 		)
 
+		console.log('status from /me: ', userResponse.status)
+		
 		const user = await userResponse.json()
+
+		console.log('data from /me: ', user)
 
 		const isoDate = new Date()
 		isoDate.setTime(isoDate.getTime() + (59*60*1000)) 
