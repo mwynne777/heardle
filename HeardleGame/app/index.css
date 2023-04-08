@@ -3,7 +3,7 @@ body {
 }
 
 .rswp__active._InfoRSWP, ._DevicesRSWP, ._VolumeRSWP {
-  display: none;
+  display: none !important;
 }
 
 .customPlayer ._SliderRSWP {
