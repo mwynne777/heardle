@@ -32,8 +32,8 @@ export default async(
 	} else {
 		res.removeHeader(STATE_KEY)
 
-		const body = { code: code, redirect_uri: REDIRECT_URI, grant_type: 'authorization_code' }
-		const formBody = Object.keys(body).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(body[key])).join('&');
+		const body = { code: code as string, redirect_uri: REDIRECT_URI, grant_type: 'authorization_code' }
+		const formBody = Object.keys(body).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(body[key as keyof typeof body])).join('&');
 
 
 		const tokenResponse = await fetch(
