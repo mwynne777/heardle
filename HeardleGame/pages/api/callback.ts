@@ -27,6 +27,9 @@ export default async(
 	var state = req.query.state || null
 	var storedState = req.cookies ? req.cookies[STATE_KEY] : null
 
+	console.log('storedState: ', storedState)
+	console.log('state: ', state)
+
 	if (state === null || state !== storedState) {
 		res.redirect(
 			`${CLIENT_URL}/#` +
