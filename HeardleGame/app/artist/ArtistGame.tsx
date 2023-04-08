@@ -46,7 +46,7 @@ const ArtistGame = ({ accessToken }: ArtistGameProps) => {
                 <>
                     <Typography variant="h3">{artist.name}</Typography>
                     <img src={artist.images[0].url} height={300} width={300}/>
-                    <Link href='/artist' style={{ textDecoration: 'none' }}>
+                    <Link href={`/game/${artist.id}`} style={{ textDecoration: 'none' }}>
                         <Button variant='outlined' sx={{ margin: '7px'}}>
                             Play {artist.name} Heardle
                         </Button>

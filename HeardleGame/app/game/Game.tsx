@@ -3,8 +3,7 @@
 import { useEffect, useReducer } from "react";
 import Box from "@mui/material/Box";
 import Button from '@mui/material/Button'
-import spotifyApi from "./SpotifyApi";
-import Link from "next/link";
+import spotifyApi, { SpotifyWebApi } from "./SpotifyApi";
 
 import Autocomplete from './Autocomplete'
 import Guesses from "./Guesses";
@@ -12,38 +11,30 @@ import Progress from './progress/Progress';
 import reducer, { getNextDuration, initialGameState } from "./reducer";
 import AnswerModal from "./AnswerModal";
 
-// const getSongsByArtist = async (artistId: string, spotifyApi: SpotifyWebApi.SpotifyWebApiJs) => {
-//     const artistAlbums = await spotifyApi.getArtistAlbums(artistId, { album_type: 'album' })
-//     console.log(artistAlbums.items)
-//     const promises = artistAlbums.items.map(album => spotifyApi.getAlbumTracks(album.id))
-//     const unvalidatedSongs = await Promise.all(promises)
-//     const validatedSongs = new Set()
-//     unvalidatedSongs.forEach((album) => {
-//         album.items.forEach((song) => {
-//             validatedSongs.add(song.name)
-//         })
-//     })
-//     console.log(validatedSongs)
-// }
-
 type GameProps = {
-    accessToken: string
+    accessToken: string,
+    artistId?: string
 }
 
-const game = ({ accessToken }: GameProps) => {
+const game = ({ accessToken, artistId }: GameProps) => {
     const [state, dispatch] = useReducer(reducer, initialGameState)
     const { answer, autocompleteOptions, duration, guesses, isOver, isWinningRound, playing, spotifyDeviceId } = state
+    
+    const seekTo = (millis: number) => {
+        spotifyApi.seek(millis, { device_id: spotifyDeviceId })
+    }
     
     useEffect(() => { 
         spotifyApi.setAccessToken(accessToken)
     }, [])
 
-    const seekTo = (millis: number) => {
-        spotifyApi.seek(millis, { device_id: spotifyDeviceId })
-    }
 
     useEffect(() => {
-        fetchRandomSong()
+        if (artistId !== null && artistId !== undefined) {
+            getSongsByArtist(artistId, spotifyApi)
+        } else {
+            fetchRandomSong()
+        }
     }, [])
 
     useEffect(() => {
@@ -83,6 +74,31 @@ const game = ({ accessToken }: GameProps) => {
                     lengthMillis: spotifySearchResponse.tracks.items[0].duration_ms,
                     title: spotifySearchResponse.tracks.items[0].name,
                     uri: spotifySearchResponse.tracks.items[0].uri
+                }
+            }
+        })
+    }
+
+    const getSongsByArtist = async (artistId: string, spotifyApi: SpotifyWebApi) => {
+        const artistAlbums = await spotifyApi.getArtistAlbums(artistId, { album_type: 'album', limit: 50 })
+        const dedupedAlbums = artistAlbums.items.filter((value, index, self) =>
+            index === self.findIndex((t) => (
+                t.name === value.name
+            ))
+        )
+        const randomAlbum = dedupedAlbums[Math.floor(Math.random()*dedupedAlbums.length)]
+        const albumTracks = await spotifyApi.getAlbumTracks(randomAlbum.id)
+        const randomSong = albumTracks.items[Math.floor(Math.random()*albumTracks.items.length)];
+        dispatch({ 
+            type: 'get-new-song',
+            payload: {
+                answer: {
+                    artist: randomSong.artists[0].name,
+                    id: randomSong.name,
+                    img: randomAlbum.images[0].url,
+                    lengthMillis: randomSong.duration_ms,
+                    title: randomSong.name,
+                    uri: randomSong.uri
                 }
             }
         })
@@ -163,7 +179,6 @@ const game = ({ accessToken }: GameProps) => {
                     togglePlay={() => dispatch({ type: 'toggle-play', payload: { playing: !playing } })}
                 />
             }
-            <Link href='/artist'>Go to Artist Game</Link>
         </div>
     )
 }
