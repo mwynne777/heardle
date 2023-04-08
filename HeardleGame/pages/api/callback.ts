@@ -18,6 +18,7 @@ export default async(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) => {
+	console.log('Hit callback endpoint')
     var code = req.query.code || null
 	var state = req.query.state || null
 	var storedState = req.cookies ? req.cookies[STATE_KEY] : null
