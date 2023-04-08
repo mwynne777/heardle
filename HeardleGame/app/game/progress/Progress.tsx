@@ -73,7 +73,7 @@ export default function Progress({ accessToken, duration, play, uri, seekTo, set
                 variant="determinate"
                 value={progress}
                 sx={{
-                    background: `url(${Background})`,
+                    background: `url(${Background.src})`,
                     backgroundSize: '500px',
                     marginBottom: '8px',
                     height: '27px'
