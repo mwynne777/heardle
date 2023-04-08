@@ -11,25 +11,34 @@ type Authorization = {
     isAuthorized: false
 }
 
+type User = {
+    id: string,
+    email: string,
+    access_token: string| null,
+    access_token_expires_at: Date | null,
+    refresh_token: string
+}
+
 const isUserAuthorized = async (id: string | null | undefined): Promise<Authorization> => {
     if (id === null || id === undefined || id === '') return { isAuthorized: false }
 
     const connection = await mysql.createConnection(DATABASE_URL);
-    const [rows] = await connection.execute(
+    const dbresponse = await connection.execute(
         'SELECT * FROM users WHERE id = ? LIMIT 1',
         [id]
     )
+    const rows = dbresponse[0] as User[]
 
     const now = new Date()
     var newDateObj = new Date(now.getTime() + now.getTimezoneOffset()*60000);
-    if (rows.length > 0 && rows[0].access_token !== null && new Date(rows[0].access_token_expires_at) > newDateObj) {
+    if (rows.length > 0 && rows[0].access_token !== null && rows[0].access_token_expires_at !== null && new Date(rows[0].access_token_expires_at) > newDateObj) {
         console.log('Pulled your access token from the db, looks current')
         return { isAuthorized: true, access_token: rows[0].access_token }
     }
 
     if (rows.length > 0 && rows[0].refresh_token !== null) {
         const body = { grant_type: 'refresh_token', refresh_token: rows[0].refresh_token }
-		const formBody = Object.keys(body).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(body[key])).join('&');
+		const formBody = Object.keys(body).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(body[key as keyof typeof body])).join('&');
 
         const tokenResponse = await fetch(
             'https://accounts.spotify.com/api/token',
