@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import querystring from 'querystring'
 import { setCookie } from '../../utils/cookies'
-import mysql from 'mysql2'
+import { connect } from '@planetscale/database'
 
 const SPOTIFY_CLIENT_ID: string = process.env.SPOTIFY_CLIENT_ID ?? ''
 const SPOTIFY_CLIENT_SECRET: string = process.env.SPOTIFY_CLIENT_SECRET ?? ''
@@ -11,14 +11,18 @@ const STATE_KEY: string = process.env.STATE_KEY ?? ''
 const DATABASE_URL: string = process.env.DATABASE_URL ?? ''
 const USER_COOKIE: string = process.env.USER_COOKIE ?? ''
 
-const connection = mysql.createConnection(DATABASE_URL);
-connection.connect()
-
 export default async(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) => {
 	console.log('Hit callback endpoint')
+
+	const config = {
+		url: DATABASE_URL
+	}
+	  
+	const conn = connect(config)
+
     var code = req.query.code || null
 	var state = req.query.state || null
 	var storedState = req.cookies ? req.cookies[STATE_KEY] : null
@@ -78,15 +82,10 @@ export default async(
 		isoDate.setTime(isoDate.getTime() + (59*60*1000)) 
 		const mySQLDateString = isoDate.toJSON().slice(0, 19).replace('T', ' ');
 
-		connection.query(
+		await conn.execute(
 			'INSERT INTO users (id, email, access_token, access_token_expires_at, refresh_token) VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE email = VALUES(email), access_token = VALUES(access_token), access_token_expires_at = VALUES(access_token_expires_at), refresh_token = VALUES(refresh_token)',
 			[user.id, user.email, tokenData.access_token, mySQLDateString, tokenData.refresh_token],
-			(err, result, fields) => {
-				console.log('err: ', err)
-				console.log('result: ', result)
-				console.log('fields: ', fields)
-			}
-			)
+		)
 
 		setCookie(res, USER_COOKIE, user.id, { path: '/' })
 		res.redirect(`${CLIENT_URL}/game`)
