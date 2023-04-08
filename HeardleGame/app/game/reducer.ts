@@ -28,6 +28,7 @@ type GameState = {
 	duration: Duration
 	playing: boolean
 	autocompleteOptions: string[]
+	artistSongs: string[]
 	answer: Song
 	guesses: Guess[]
 }
@@ -40,6 +41,7 @@ const initialGameState: GameState = {
 	duration: 1,
 	playing: false,
 	autocompleteOptions: [],
+	artistSongs: [],
 	answer: initialSong,
 	guesses: []
 }
@@ -71,6 +73,13 @@ type GameAction =
 				answer: Song
 			}
 	  }
+	| {
+			type: 'get-artist-songs'
+			payload: {
+				answer: Song,
+				artistSongs: string[]
+			}
+	}
 	| {
 			type: 'clear-autocomplete'
 	  }
@@ -150,6 +159,12 @@ const reducer = (state: GameState, action: GameAction): GameState => {
 			return {
 				...state,
 				answer: action.payload.answer
+			}
+		case 'get-artist-songs':
+			return {
+				...state,
+				answer: action.payload.answer,
+				artistSongs: action.payload.artistSongs
 			}
 		case 'clear-autocomplete':
 			return {
