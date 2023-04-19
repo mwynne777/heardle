@@ -6,17 +6,18 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     try {
         const dirRelativeToPublicFolder = 'songs'
 
-        const dir = path.resolve('./public', dirRelativeToPublicFolder);
+        const dir = path.resolve('./public', dirRelativeToPublicFolder)
 
-        songs = require('fs').readFileSync(path.join('/', dir, 'topTenSongs.txt'), 'utf-8')
-    .split('\n')
-    .filter(Boolean);
+        songs = require('fs')
+            .readFileSync(path.join('/', dir, 'topTenSongs.txt'), 'utf-8')
+            .split('\n')
+            .filter(Boolean)
     } catch (err) {
         console.error(err)
     }
 
-	const numberOfSongs = songs.length
-	const randomIndex = Math.floor(Math.random() * numberOfSongs)
+    const numberOfSongs = songs.length
+    const randomIndex = Math.floor(Math.random() * numberOfSongs)
     console.log('Chosen song: ', songs[randomIndex])
-	res.json({ song: songs[randomIndex] })
+    res.json({ song: songs[randomIndex] })
 }
