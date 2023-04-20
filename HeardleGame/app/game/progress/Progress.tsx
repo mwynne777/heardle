@@ -1,13 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
 import SpotifyPlayer from 'react-spotify-web-playback'
 import Box from '@mui/material/Box'
-import LinearProgress from '@mui/material/LinearProgress'
-import Background from './hpb.png'
+import TimeBar from '../TimeBar'
 
-const formatTimeStamp = (time: number) => {
-    let result = '0:'
-    return time < 10 ? `${result}0${time}` : `${result}${time}`
-}
+const UPDATE_INTERVAL_MS = 16
 
 type ProgressProps = {
     accessToken: string
@@ -28,37 +24,37 @@ export default function Progress({
     setDeviceId,
     setPlay,
 }: ProgressProps) {
-    const [progress, setProgress] = useState(0)
-    const [currentTimeStamp, setCurrentTimeStamp] = useState(formatTimeStamp(0))
-    const progressMax = (duration / 16) * 100
+    const [currentTime, setCurrentTime] = useState(0)
     const timer = useRef<NodeJS.Timer | null>(null)
 
     useEffect(() => {
         if (!play) {
-            setProgress(0)
-            setCurrentTimeStamp(formatTimeStamp(0))
+            setCurrentTime(0)
             if (timer.current) {
                 clearInterval(timer.current)
             }
         }
     }, [play, timer])
 
-    const updateProgressBar = (increment: number) => {
+    // Reset time when duration is exceeded
+    useEffect(() => {
+        if (currentTime <= duration) return
+
+        setCurrentTime(0)
+        timer.current && clearInterval(timer.current)
+    }, [currentTime, duration])
+
+    // Clear interval on unmount
+    useEffect(() => {
+        return () => {
+            timer.current && clearInterval(timer.current)
+        }
+    }, [])
+
+    const updateProgressBar = () => {
         timer.current = setInterval(() => {
-            setProgress((oldProgress) => {
-                if (oldProgress > progressMax + increment) {
-                    clearInterval(timer.current!)
-                    setCurrentTimeStamp(formatTimeStamp(0))
-                    return 0
-                }
-                setCurrentTimeStamp(
-                    formatTimeStamp(
-                        Math.floor((oldProgress + increment) / 6.25)
-                    )
-                )
-                return oldProgress + increment
-            })
-        }, 100)
+            setCurrentTime((prevTime) => prevTime + UPDATE_INTERVAL_MS / 1000)
+        }, UPDATE_INTERVAL_MS)
     }
 
     return (
@@ -72,7 +68,7 @@ export default function Progress({
                     setDeviceId(data.deviceId)
                     if (data.isPlaying && data.type === 'player_update') {
                         setPlay(true)
-                        updateProgressBar((1 / (16 * 10)) * 100)
+                        updateProgressBar()
                     } else if (
                         !data.isPlaying &&
                         data.type === 'player_update'
@@ -84,26 +80,7 @@ export default function Progress({
                 play={play}
             />
             <Box sx={{ width: '100%' }}>
-                <LinearProgress
-                    variant='determinate'
-                    value={progress}
-                    sx={{
-                        background: `url(${Background.src})`,
-                        backgroundSize: '500px',
-                        marginBottom: '8px',
-                        height: '27px',
-                    }}
-                />
-            </Box>
-            <Box
-                sx={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                }}
-            >
-                <div>{currentTimeStamp}</div>
-                <div>0:16</div>
+                <TimeBar currentTime={currentTime} duration={duration} />
             </Box>
         </>
     )
