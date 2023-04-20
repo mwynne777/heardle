@@ -1,15 +1,15 @@
-import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
+import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
 
-import { isUserAuthorized } from '../../utils/authorization';
-import GameModes from './GameModes';
+import { isUserAuthorized } from '../../utils/authorization'
+import GameModes from './GameModes'
 
 const USER_COOKIE: string = process.env.USER_COOKIE ?? ''
 
 export default async function Page() {
-    const cookieStore = cookies();
-    const user = cookieStore.get(USER_COOKIE);
-    
+    const cookieStore = cookies()
+    const user = cookieStore.get(USER_COOKIE)
+
     const userAuth = await isUserAuthorized(user?.value)
 
     if (!userAuth.isAuthorized) {
@@ -17,8 +17,5 @@ export default async function Page() {
         redirect('/')
     }
 
-    return (
-        <GameModes/>
-    )
-  }
-  
+    return <GameModes />
+}

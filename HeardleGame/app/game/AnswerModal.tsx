@@ -1,20 +1,22 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Box from '@mui/material/Box'
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
+import Dialog from '@mui/material/Dialog'
+import DialogTitle from '@mui/material/DialogTitle'
 import Slider from '@mui/material/Slider'
-import CloseIcon from '@mui/icons-material/Close';
-import PauseRounded from '@mui/icons-material/PauseRounded';
-import PlayArrowRounded from '@mui/icons-material/PlayArrowRounded';
-import { Song } from './reducer';
-import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close'
+import PauseRounded from '@mui/icons-material/PauseRounded'
+import PlayArrowRounded from '@mui/icons-material/PlayArrowRounded'
+import { Song } from './reducer'
+import IconButton from '@mui/material/IconButton'
 
 const formatTimeStamp = (timeMillis: number) => {
     const seconds = Math.floor(timeMillis / 1000)
     const secondsVal = seconds % 60
-    const minutes = Math.floor(seconds/ 60)
+    const minutes = Math.floor(seconds / 60)
     let result = `${minutes}:`
-    return secondsVal < 10 ? `${result}0${secondsVal}` : `${result}${secondsVal}`
+    return secondsVal < 10
+        ? `${result}0${secondsVal}`
+        : `${result}${secondsVal}`
 }
 
 type AnswerModalProps = {
@@ -28,7 +30,16 @@ type AnswerModalProps = {
     togglePlay: () => void
 }
 
-const AnswerModal = ({answer, open, playing, songLengthMillis, titleText, onClose, seekTo, togglePlay}: AnswerModalProps) => {
+const AnswerModal = ({
+    answer,
+    open,
+    playing,
+    songLengthMillis,
+    titleText,
+    onClose,
+    seekTo,
+    togglePlay,
+}: AnswerModalProps) => {
     const [calculatedMillis, setCalculatedMillis] = useState(0)
     const timerRef = useRef<NodeJS.Timer | null>(null)
 
@@ -41,8 +52,8 @@ const AnswerModal = ({answer, open, playing, songLengthMillis, titleText, onClos
                     }
                     clearInterval(timerRef.current!)
                     return songLengthMillis
-                });
-            }, 200);
+                })
+            }, 200)
         } else {
             if (timerRef.current && timerRef.current !== undefined) {
                 clearInterval(timerRef.current)
@@ -51,24 +62,27 @@ const AnswerModal = ({answer, open, playing, songLengthMillis, titleText, onClos
     }, [playing])
 
     return (
-        <Dialog
-            open={open}
-            onClose={onClose}
-        >
-            <Box sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: 'white',
-                width: '500px',
-                height: '500px',
-                borderRadius: '7px'
-            }}>
-                <DialogTitle variant='h6' component='h2' sx={{ padding: '0 0 8px 0' }}>
+        <Dialog open={open} onClose={onClose}>
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: 'white',
+                    width: '500px',
+                    height: '500px',
+                    borderRadius: '7px',
+                }}
+            >
+                <DialogTitle
+                    variant='h6'
+                    component='h2'
+                    sx={{ padding: '0 0 8px 0' }}
+                >
                     {titleText}
                     <IconButton
-                        aria-label="close"
+                        aria-label='close'
                         onClick={onClose}
                         sx={{
                             position: 'absolute',
@@ -83,20 +97,21 @@ const AnswerModal = ({answer, open, playing, songLengthMillis, titleText, onClos
                 <img src={answer.img} height='300px' width='300px' />
                 <div>{answer.title}</div>
                 <div>{answer.artist}</div>
-                <Box 
+                <Box
                     sx={{
                         width: '100%',
                         padding: '4px 20px',
                         display: 'flex',
                         flexDirection: 'column',
-                        alignItems: 'center'
+                        alignItems: 'center',
                     }}
                 >
                     <IconButton
                         aria-label={playing ? 'pause' : 'play'}
-                        onClick={() => { 
-                            togglePlay() 
-                            if (calculatedMillis > 0) seekTo(calculatedMillis) }}
+                        onClick={() => {
+                            togglePlay()
+                            if (calculatedMillis > 0) seekTo(calculatedMillis)
+                        }}
                         sx={{ width: '24px', height: '24px' }}
                     >
                         {!playing ? (
@@ -105,26 +120,36 @@ const AnswerModal = ({answer, open, playing, songLengthMillis, titleText, onClos
                                 sx={{ fontSize: '3rem' }}
                             />
                         ) : (
-                            <PauseRounded htmlColor='black' sx={{ fontSize: '3rem' }} />
+                            <PauseRounded
+                                htmlColor='black'
+                                sx={{ fontSize: '3rem' }}
+                            />
                         )}
                     </IconButton>
-                    <Slider 
-                        value={(calculatedMillis/songLengthMillis) * 100}
+                    <Slider
+                        value={(calculatedMillis / songLengthMillis) * 100}
                         onChange={(_, value: number | number[]) => {
-                            const newMillis = Math.floor((value as number)/100 * songLengthMillis)
+                            const newMillis = Math.floor(
+                                ((value as number) / 100) * songLengthMillis
+                            )
                             seekTo(newMillis)
                             setCalculatedMillis(newMillis)
                         }}
                     />
-                    <Box 
+                    <Box
                         sx={{
                             width: '100%',
                             display: 'flex',
-                            justifyContent: 'space-between'
+                            justifyContent: 'space-between',
                         }}
                     >
                         <div>{formatTimeStamp(calculatedMillis)}</div>
-                        <div>-{formatTimeStamp(songLengthMillis - calculatedMillis)}</div>
+                        <div>
+                            -
+                            {formatTimeStamp(
+                                songLengthMillis - calculatedMillis
+                            )}
+                        </div>
                     </Box>
                 </Box>
             </Box>
