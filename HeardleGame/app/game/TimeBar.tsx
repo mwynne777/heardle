@@ -24,7 +24,7 @@ interface Props {
 
 export default function TimeBar({ currentTime, duration }: Props) {
     const progress = (100 * currentTime) / MAX_SECONDS
-    const currentTimeStamp = formatTimeStamp(Math.floor(currentTime))
+    const currentTimeStamp = formatTimeStamp(Math.round(currentTime))
 
     return (
         <Box>
