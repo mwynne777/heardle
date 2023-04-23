@@ -176,109 +176,123 @@ const game = ({ accessToken, artistId }: GameProps) => {
     return (
         <div
             style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                margin: '16px',
+                width: '100%',
+                height: '100%',
+                boxSizing: 'border-box',
+                padding: 15,
             }}
         >
-            <Guesses guesses={guesses} />
-            {accessToken.length > 0 && (
-                <Box className='customPlayer' sx={{ width: '500px' }}>
-                    <Progress
-                        accessToken={accessToken}
-                        duration={duration}
-                        play={playing}
-                        uri={answer.uri}
-                        setDeviceId={(id: string) =>
+            <div
+                style={{
+                    display: 'flex',
+                    margin: 'auto',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    width: '100%',
+                    maxWidth: '500px',
+                }}
+            >
+                <Guesses guesses={guesses} />
+                {accessToken.length > 0 && (
+                    <Box className='customPlayer' sx={{ width: '100%' }}>
+                        <Progress
+                            accessToken={accessToken}
+                            duration={duration}
+                            play={playing}
+                            uri={answer.uri}
+                            setDeviceId={(id: string) =>
+                                dispatch({
+                                    type: 'load-player',
+                                    payload: { deviceId: id },
+                                })
+                            }
+                            setPlay={async (play: boolean) => {
+                                if (play) {
+                                    await new Promise((resolve) =>
+                                        setTimeout(resolve, 200)
+                                    )
+                                }
+                                dispatch({
+                                    type: 'toggle-play',
+                                    payload: { playing: play },
+                                })
+                            }}
+                            seekTo={seekTo}
+                        />
+                    </Box>
+                )}
+                <Autocomplete
+                    labelText='Guess the song (by title or artist)'
+                    options={autocompleteOptions}
+                    getAutocomplete={fetchAutocomplete}
+                    onSelect={(value) => {
+                        if (value == null) {
+                            dispatch({ type: 'clear-autocomplete' })
+                        } else {
                             dispatch({
-                                type: 'load-player',
-                                payload: { deviceId: id },
+                                type: 'guess',
+                                payload: { guess: value },
                             })
                         }
-                        setPlay={async (play: boolean) => {
-                            if (play) {
-                                await new Promise((resolve) =>
-                                    setTimeout(resolve, 200)
-                                )
-                            }
-                            dispatch({
-                                type: 'toggle-play',
-                                payload: { playing: play },
-                            })
-                        }}
-                        seekTo={seekTo}
-                    />
-                </Box>
-            )}
-            <Autocomplete
-                labelText='Guess the song (by title or artist)'
-                options={autocompleteOptions}
-                getAutocomplete={fetchAutocomplete}
-                onSelect={(value) => {
-                    if (value == null) {
-                        dispatch({ type: 'clear-autocomplete' })
-                    } else {
-                        dispatch({ type: 'guess', payload: { guess: value } })
-                    }
-                }}
-            />
-            {!isOver && (
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent:
-                            !isOver && duration !== 16
-                                ? 'space-between'
-                                : 'flex-end',
-                        width: '500px',
-                        marginTop: '12px',
                     }}
-                >
-                    {!isOver && duration !== 16 && (
+                />
+                {!isOver && (
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent:
+                                !isOver && duration !== 16
+                                    ? 'space-between'
+                                    : 'flex-end',
+                            width: '100%',
+                            marginTop: '12px',
+                        }}
+                    >
+                        {!isOver && duration !== 16 && (
+                            <Button
+                                variant='outlined'
+                                onClick={() => dispatch({ type: 'skip' })}
+                                sx={{ textTransform: 'none' }}
+                            >
+                                SKIP (+{getNextDuration(state) - duration}s)
+                            </Button>
+                        )}
                         <Button
                             variant='outlined'
-                            onClick={() => dispatch({ type: 'skip' })}
-                            sx={{ textTransform: 'none' }}
+                            onClick={() => dispatch({ type: 'give-up' })}
+                            disabled={isOver}
                         >
-                            SKIP (+{getNextDuration(state) - duration}s)
+                            Give up
                         </Button>
-                    )}
-                    <Button
-                        variant='outlined'
-                        onClick={() => dispatch({ type: 'give-up' })}
-                        disabled={isOver}
-                    >
-                        Give up
-                    </Button>
-                </Box>
-            )}
-            {isOver && (
-                <AnswerModal
-                    answer={answer}
-                    open={isOver}
-                    playing={playing}
-                    songLengthMillis={answer.lengthMillis}
-                    titleText={
-                        isWinningRound ? 'You Win!' : "Here's the answer!"
-                    }
-                    onClose={async () => {
-                        dispatch({ type: 'restart' })
-                        if (artistId === null || artistId === undefined) {
-                            fetchRandomSong()
-                        } else {
-                            getSongsByArtist(artistId)
+                    </Box>
+                )}
+                {isOver && (
+                    <AnswerModal
+                        answer={answer}
+                        open={isOver}
+                        playing={playing}
+                        songLengthMillis={answer.lengthMillis}
+                        titleText={
+                            isWinningRound ? 'You Win!' : "Here's the answer!"
                         }
-                    }}
-                    seekTo={seekTo}
-                    togglePlay={() =>
-                        dispatch({
-                            type: 'toggle-play',
-                            payload: { playing: !playing },
-                        })
-                    }
-                />
-            )}
+                        onClose={async () => {
+                            dispatch({ type: 'restart' })
+                            if (artistId === null || artistId === undefined) {
+                                fetchRandomSong()
+                            } else {
+                                getSongsByArtist(artistId)
+                            }
+                        }}
+                        seekTo={seekTo}
+                        togglePlay={() =>
+                            dispatch({
+                                type: 'toggle-play',
+                                payload: { playing: !playing },
+                            })
+                        }
+                    />
+                )}
+            </div>
         </div>
     )
 }
