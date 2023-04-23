@@ -1,10 +1,15 @@
-import authorizePage from '../../../utils/authorizePage'
+import AuthorizedPage from '../../../utils/AuthorizedPage'
 import Game from '../Game'
 
 const random = async () => {
-    const access_token = await authorizePage()
-
-    return <Game accessToken={access_token} />
+    return (
+        <>
+            {/* @ts-expect-error Server Component */}
+            <AuthorizedPage>
+                <Game />
+            </AuthorizedPage>
+        </>
+    )
 }
 
 export default random

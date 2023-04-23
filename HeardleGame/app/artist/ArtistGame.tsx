@@ -8,15 +8,13 @@ import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 
 import Autocomplete from '../game/Autocomplete'
+import { useAccessToken } from '../../utils/AuthorizationContext'
 
-type ArtistGameProps = {
-    accessToken: string
-}
-
-const ArtistGame = ({ accessToken }: ArtistGameProps) => {
+const ArtistGame = () => {
     const [optionsFull, setOptionsFull] = useState<
         SpotifyApi.ArtistObjectFull[]
     >([])
+    const accessToken = useAccessToken()
     const [options, setOptions] = useState<string[]>([])
     const [artist, setArtist] = useState<SpotifyApi.ArtistObjectFull | null>(
         null
@@ -24,7 +22,7 @@ const ArtistGame = ({ accessToken }: ArtistGameProps) => {
 
     useEffect(() => {
         spotifyApi.setAccessToken(accessToken)
-    }, [])
+    }, [accessToken])
 
     return (
         <Box

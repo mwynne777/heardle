@@ -1,10 +1,15 @@
-import authorizePage from '../../utils/authorizePage'
+import AuthorizedPage from '../../utils/AuthorizedPage'
 import ArtistGame from './ArtistGame'
 
-const page = async () => {
-    const access_token = await authorizePage()
-
-    return <ArtistGame accessToken={access_token} />
+const page = () => {
+    return (
+        <>
+            {/* @ts-expect-error Server Component */}
+            <AuthorizedPage>
+                <ArtistGame />
+            </AuthorizedPage>
+        </>
+    )
 }
 
 export default page
