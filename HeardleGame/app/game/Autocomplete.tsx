@@ -27,7 +27,7 @@ const Autocomplete = ({
             id='combo-box-demo'
             value={value}
             options={options}
-            sx={{ width: 350 }}
+            sx={{ width: '100%' }}
             onChange={(_event, value) => {
                 if (value !== null) {
                     onSelect(value)

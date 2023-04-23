@@ -8,6 +8,7 @@ import PauseRounded from '@mui/icons-material/PauseRounded'
 import PlayArrowRounded from '@mui/icons-material/PlayArrowRounded'
 import { Song } from './reducer'
 import IconButton from '@mui/material/IconButton'
+import { DialogContent } from '@mui/material'
 
 const formatTimeStamp = (timeMillis: number) => {
     const seconds = Math.floor(timeMillis / 1000)
@@ -62,16 +63,14 @@ const AnswerModal = ({
     }, [playing])
 
     return (
-        <Dialog open={open} onClose={onClose}>
-            <Box
+        <Dialog open={open} onClose={onClose} maxWidth='xs' fullWidth={true}>
+            <DialogContent
                 sx={{
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
                     backgroundColor: 'white',
-                    width: '500px',
-                    height: '500px',
                     borderRadius: '7px',
                 }}
             >
@@ -94,13 +93,15 @@ const AnswerModal = ({
                         <CloseIcon />
                     </IconButton>
                 </DialogTitle>
-                <img src={answer.img} height='300px' width='300px' />
+                <img
+                    src={answer.img}
+                    style={{ width: '100%', maxWidth: 300 }}
+                />
                 <div>{answer.title}</div>
                 <div>{answer.artist}</div>
                 <Box
                     sx={{
                         width: '100%',
-                        padding: '4px 20px',
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
@@ -152,7 +153,7 @@ const AnswerModal = ({
                         </div>
                     </Box>
                 </Box>
-            </Box>
+            </DialogContent>
         </Dialog>
     )
 }
