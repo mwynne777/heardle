@@ -10,13 +10,13 @@ import Guesses from './Guesses'
 import Progress from './progress/Progress'
 import reducer, { getNextDuration, initialGameState } from './reducer'
 import AnswerModal from './AnswerModal'
+import { useAccessToken } from '../../utils/AuthorizationContext'
 
 type GameProps = {
-    accessToken: string
     artistId?: string
 }
 
-const game = ({ accessToken, artistId }: GameProps) => {
+const game = ({ artistId }: GameProps) => {
     const [state, dispatch] = useReducer(reducer, initialGameState)
     const {
         answer,
@@ -29,6 +29,8 @@ const game = ({ accessToken, artistId }: GameProps) => {
         playing,
         spotifyDeviceId,
     } = state
+
+    const accessToken = useAccessToken()
 
     const seekTo = (millis: number) => {
         spotifyApi.seek(millis, { device_id: spotifyDeviceId })
@@ -196,7 +198,6 @@ const game = ({ accessToken, artistId }: GameProps) => {
                 {accessToken.length > 0 && (
                     <Box className='customPlayer' sx={{ width: '100%' }}>
                         <Progress
-                            accessToken={accessToken}
                             duration={duration}
                             play={playing}
                             uri={answer.uri}

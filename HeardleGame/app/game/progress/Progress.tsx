@@ -2,11 +2,11 @@ import React, { useEffect, useRef, useState } from 'react'
 import SpotifyPlayer from 'react-spotify-web-playback'
 import Box from '@mui/material/Box'
 import TimeBar from '../TimeBar'
+import { useAccessToken } from '../../../utils/AuthorizationContext'
 
 const UPDATE_INTERVAL_MS = 16
 
 type ProgressProps = {
-    accessToken: string
     duration: number
     play: boolean
     uri: string
@@ -16,7 +16,6 @@ type ProgressProps = {
 }
 
 export default function Progress({
-    accessToken,
     duration,
     play,
     uri,
@@ -26,6 +25,8 @@ export default function Progress({
 }: ProgressProps) {
     const [currentTime, setCurrentTime] = useState(0)
     const timer = useRef<NodeJS.Timer | null>(null)
+
+    const accessToken = useAccessToken()
 
     useEffect(() => {
         if (!play) {
